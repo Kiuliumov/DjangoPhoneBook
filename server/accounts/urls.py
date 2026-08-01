@@ -5,6 +5,6 @@ from .views import AccountViewSet, UserViewSet
 router = DefaultRouter()
 
 router.register("users", UserViewSet, basename="users")
-router.register("accounts", AccountViewSet, basename="accounts")
+router.register("", AccountViewSet, basename="accounts")
 
 urlpatterns = router.urls

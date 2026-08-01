@@ -12,12 +12,18 @@ User = get_user_model()
 
 class UserViewSet(viewsets.GenericViewSet):
     queryset = User.objects.all()
+    serializer_class = RegisterSerializer
 
     def get_permissions(self):
         if self.action in ["register", "login"]:
             return [permissions.AllowAny()]
 
         return [permissions.IsAuthenticated()]
+
+    def get_serializer_class(self):
+        if self.action == "register":
+            return RegisterSerializer
+        return LoginSerializer
 
     @action(detail=False, methods=["post"])
     def register(self, request):
