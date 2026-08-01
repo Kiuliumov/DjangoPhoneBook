@@ -35,6 +35,22 @@ class RegisterSerializer(serializers.ModelSerializer):
             "account",
         )
 
+    def validate_username(self, value):
+        if User.objects.filter(username__iexact=value).exists():
+            raise serializers.ValidationError(
+                "Username already exists."
+            )
+
+        return value
+
+    def validate_email(self, value):
+        if User.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError(
+                "Email already exists."
+            )
+
+        return value
+
     def validate_password(self, value):
         validate_password(value)
         return value
@@ -45,7 +61,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         user = User.objects.create_user(**validated_data)
 
-        account = user.account
+        account, _ = Account.objects.get_or_create(user=user)
 
         account_serializer = AccountSerializer(
             account,
@@ -70,6 +86,11 @@ class LoginSerializer(serializers.Serializer):
 
         if not user:
             raise serializers.ValidationError("Invalid credentials.")
+
+        if not user.is_active:
+            raise serializers.ValidationError(
+                "User account is disabled."
+            )
 
         refresh = RefreshToken.for_user(user)
 
