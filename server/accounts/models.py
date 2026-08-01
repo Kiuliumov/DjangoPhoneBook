@@ -19,9 +19,7 @@ class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.URLField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
-    gender = models.CharField(
-        max_length=2, blank=True, null=True, choices=GenderChoices.choices
-    )
+    gender = models.CharField(max_length=2, blank=True, null=True, choices=GenderChoices.choices)
     bio = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
