@@ -1,5 +1,6 @@
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, AccountViewSet
+
+from .views import AccountViewSet, UserViewSet
 
 router = DefaultRouter()
 
