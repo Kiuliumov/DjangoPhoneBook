@@ -25,9 +25,7 @@ def test_register(api_client):
 
     assert response.status_code == 201
 
-    assert User.objects.filter(
-        username="alice"
-    ).exists()
+    assert User.objects.filter(username="alice").exists()
 
 
 @pytest.mark.django_db
