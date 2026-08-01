@@ -1,17 +1,22 @@
 import pytest
+from django.urls import reverse
 
 
 @pytest.mark.django_db
-def test_get_account(authenticated_client):
-    response = authenticated_client.get("/accounts/me/")
+def test_get_account(authenticated_client, account):
+    url = reverse("accounts-detail", kwargs={"pk": account.id})
+
+    response = authenticated_client.get(url)
 
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_update_account(authenticated_client):
+def test_update_account(authenticated_client, account):
+    url = reverse("accounts-detail", kwargs={"pk": account.id})
+
     response = authenticated_client.patch(
-        "/accounts/me/",
+        url,
         {
             "bio": "Updated bio",
             "phone": "+987654321",
@@ -26,7 +31,9 @@ def test_update_account(authenticated_client):
 
 
 @pytest.mark.django_db
-def test_account_requires_authentication(api_client):
-    response = api_client.get("/accounts/me/")
+def test_account_requires_authentication(api_client, account):
+    url = reverse("accounts-detail", kwargs={"pk": account.id})
+
+    response = api_client.get(url)
 
     assert response.status_code == 401

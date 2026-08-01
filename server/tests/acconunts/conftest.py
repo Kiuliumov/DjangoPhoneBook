@@ -2,6 +2,8 @@ import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
+from accounts.models import Account
+
 User = get_user_model()
 
 
@@ -20,6 +22,16 @@ def user():
         last_name="Doe",
     )
 
+@pytest.fixture
+def account(user):
+    account = Account.objects.get(user=user)
+
+    account.phone = "+123456789"
+    account.gender = "M"
+    account.bio = "Test account"
+    account.save()
+
+    return account
 
 @pytest.fixture
 def authenticated_client(user):

@@ -1,13 +1,15 @@
 import pytest
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 User = get_user_model()
 
-
 @pytest.mark.django_db
 def test_register(api_client):
+    url = reverse("users-register")
+
     response = api_client.post(
-        "/users/register/",
+        url,
         {
             "username": "alice",
             "email": "alice@example.com",
@@ -24,14 +26,15 @@ def test_register(api_client):
     )
 
     assert response.status_code == 201
-
     assert User.objects.filter(username="alice").exists()
 
 
 @pytest.mark.django_db
 def test_login(api_client, user):
+    url = reverse("users-login")
+
     response = api_client.post(
-        "/users/login/",
+        url,
         {
             "username": user.username,
             "password": "StrongPassword123!",
