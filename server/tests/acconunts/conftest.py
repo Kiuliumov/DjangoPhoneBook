@@ -22,6 +22,7 @@ def user():
         last_name="Doe",
     )
 
+
 @pytest.fixture
 def account(user):
     account = Account.objects.get(user=user)
@@ -32,6 +33,7 @@ def account(user):
     account.save()
 
     return account
+
 
 @pytest.fixture
 def authenticated_client(user):

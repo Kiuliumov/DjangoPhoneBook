@@ -4,6 +4,7 @@ from django.urls import reverse
 
 User = get_user_model()
 
+
 @pytest.mark.django_db
 def test_register(api_client):
     url = reverse("users-register")
